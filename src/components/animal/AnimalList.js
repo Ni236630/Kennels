@@ -4,6 +4,7 @@ import { LocationContext } from "../Locations/LocationProvider";
 import { CustomerContext } from "../Customers/CustomerProvider";
 import { AnimalCard } from "./AnimalCard";
 import "./Animal.css"
+import { useHistory } from "react-router-dom";
 
 
 export const AnimalList = () => {
@@ -19,8 +20,15 @@ export const AnimalList = () => {
     . then(getAnimals)
   },[])// eslint-disable-line react-hooks/exhaustive-deps
   
+  const history = useHistory()
+  
   return (
-    <div className="animals">
+    <>
+    <h2>Animals</h2>
+      <button onClick={()=>{history.push("/animal/create")}}>
+        Add Animal
+      </button>
+      <div className="animals">
       {console.log("AnimalList: Render", animals)}
       {
         animals.map(animal => {
@@ -33,6 +41,7 @@ export const AnimalList = () => {
         })
       }
     </div>
+    </>
   )
 }
 

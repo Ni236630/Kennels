@@ -1,0 +1,105 @@
+import React, {useContext, useEffect, useState} from "react"
+import { LocationContext } from "../Locations/LocationProvider"
+import { AnimalContext } from "./AnimalProvider"
+import { CustomerContext } from "../Customers/CustomerProvider"
+import "./Animal.css"
+import { useHistory } from "react-router-dom"
+
+export const AnimalForm = () => {
+  const { addAnimal } = useContext(AnimalContext)
+  const { customers, getCustomers } = useContext(CustomerContext)
+  const { locations, getLocations } = useContext(LocationContext)
+  
+  /*
+  In React return 'reacts' to the state and re-renders
+  */
+ 
+  const [animal, setAnimal] = useState({
+    name: "",
+    locationId: 0,
+    customerId: 0,
+    breed:""
+  })
+  const history = useHistory()
+
+  //now we get state on initialization
+  useEffect(() =>{
+    getLocations()
+    .then(getCustomers)
+  },[])// eslint-disable-line react-hooks/exhaustive-deps
+  
+  //on field change; update state... this will re-render display values in state
+  
+  //controlled component
+  const handleControlledInputChange = (event) => {
+    //when changing state object/array create copy then set state
+    const newAnimal = { ...animal}
+    newAnimal[event.target.id] = event.target.value
+    setAnimal(newAnimal)
+  }
+  
+  const handleClickSaveAnimal = (event) => {
+    event.preventDefault() //prevents button submission
+    
+    const locationId = parseInt(animal.locationId)
+    const customerId = parseInt(animal.customerId)
+    
+    if (locationId === 0 ||customerId === 0){
+      window.alert("Please select a location")
+    } else {
+      animal.customerId = customerId
+      animal.locationId = locationId
+      //invoke addAnimal and pass animal as arguement
+      addAnimal(animal)
+      .then(()=> history.push("/animal"))
+    }
+    }
+    
+    return (
+      <form className="animalForm">
+        <h2 className="animalForm__title">New Animal</h2>
+        <fieldset>
+          <div className="form-group">
+            <label htmlFor="name">Animal name:</label>
+            <input type="text" id="name" onChange={handleControlledInputChange}required autoFocus className="from-control" placeholder="Animal name" value={animal.name}/>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div className="form-group">
+            <label htmlFor="breed">Animal breed:</label>
+            <input type="text" id="breed" onChange={handleControlledInputChange}required className="from-control" placeholder="Animal breed" value={animal.breed}/>
+          </div>
+        </fieldset>
+        <fieldset>
+              <div className="form-group">
+                  <label htmlFor="location">Assign to location: </label>
+                  <select defaultValue={animal.locationId} name="locationId" id="locationId" className="form-control"onChange={handleControlledInputChange} >
+                      <option value="0">Select a location</option>
+                      {locations.map(l => (
+                          <option key={l.id} value={l.id}>
+                              {l.name}
+                          </option>
+                      ))}
+                  </select>
+              </div>
+          </fieldset>
+          <fieldset>
+              <div className="form-group">
+                  <label htmlFor="customerId">Customer: </label>
+                  <select defaultValue={animal.customerId} name="customer" id="customerId" className="form-control" onChange={handleControlledInputChange}>
+                      <option value="0">Select a customer</option>
+                      {customers.map(c => (
+                          <option key={c.id} value={c.id}>
+                              {c.name}
+                          </option>
+                      ))}
+                  </select>
+              </div>
+          </fieldset>
+          <button className="btn btn-primary"
+            onClick={handleClickSaveAnimal}>
+            Save Animal
+          </button>
+      </form>
+    )
+}
