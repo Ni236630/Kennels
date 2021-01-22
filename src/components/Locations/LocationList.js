@@ -10,7 +10,7 @@ export const LocationList = () => {
   //useEffect grabs the initial state; doesn't handle re-render
   useEffect(() =>{
     getLocations()
-  },[])
+  },[])// eslint-disable-line react-hooks/exhaustive-deps
   
   
   return(
