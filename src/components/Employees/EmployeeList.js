@@ -9,13 +9,13 @@ export const EmployeeList = () =>{
   
   useEffect(()=>{
     getEmployees()
-  },[])
+  },[])// eslint-disable-line react-hooks/exhaustive-deps
 
-  return (
+  return(
     <div className="employees">
       {
         employees.map(employee =>{
-          return <EmployeeCard key={employee.id} employee={employee.name} />
+          return <EmployeeCard key={employee.id} employee={employee} />
         })
       }
     </div>

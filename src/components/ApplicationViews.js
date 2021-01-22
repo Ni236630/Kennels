@@ -43,6 +43,7 @@ export const ApplicationViews = () => {
                     <CustomerList />
                 </Route>   
             </CustomerProvider>
+            
             <Route path="/kennels">
                 <Kennel />
             </Route>
