@@ -1,7 +1,8 @@
 import React from 'react'
 import { Route } from "react-router-dom"
 import { Kennel } from "./Kennel"
-import { EmployeeCard } from "./Employees/EmployeeCard";
+import { EmployeeProvider } from "./Employees/EmployeeProvider";
+import { EmployeeList } from "./Employees/EmployeeList";
 import { Home } from "./Home"
 import { AnimalProvider } from './animal/AnimalProvider';
 import { AnimalList } from "./animal/AnimalList";
@@ -31,16 +32,17 @@ export const ApplicationViews = () => {
                 </Route>
              </LocationProvider>
              
-            <Route path="/employees">
-                <EmployeeCard />
-            </Route>
+            <EmployeeProvider>  
+                <Route exact path="/employees">
+                    <EmployeeList />
+                </Route>
+            </EmployeeProvider>
             
             <CustomerProvider>
                 <Route exact path="/customers">
                     <CustomerList />
                 </Route>   
             </CustomerProvider>
-            
             <Route path="/kennels">
                 <Kennel />
             </Route>
