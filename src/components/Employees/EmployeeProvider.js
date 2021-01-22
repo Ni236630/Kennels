@@ -12,20 +12,22 @@ export const EmployeeProvider = (props) => {
     .then(setEmployees)
   }
   
-  const addEmployees = employeeObj => {
-    fetch("http://localhost:8088/employees",{
+  const addEmployee = employeeObj => {
+   return fetch("http://localhost:8088/employees",{
       method:"POST",
-      header:{
+      headers:{
         "Content-Type": "application/json"
       },
       body: JSON.stringify(employeeObj)
       
     })
+    .then(getEmployees)
+    
   }
   
   return(
     <EmployeeContext.Provider value={{
-      getEmployees,employees,addEmployees
+      getEmployees,employees,addEmployee
     }}>
       {props.children}
     </EmployeeContext.Provider>

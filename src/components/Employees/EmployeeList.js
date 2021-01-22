@@ -2,6 +2,7 @@ import React,{useContext, useEffect } from "react"
 import { EmployeeContext } from "./EmployeeProvider";
 import { EmployeeCard } from "./EmployeeCard";
 import "./Employee.css"
+import { useHistory } from "react-router-dom";
 
 export const EmployeeList = () =>{
 
@@ -11,7 +12,13 @@ export const EmployeeList = () =>{
     getEmployees()
   },[])// eslint-disable-line react-hooks/exhaustive-deps
 
+  const history = useHistory()
+  
   return(
+    <>
+    <button onClick={()=>{history.push("/employees/create")}}>
+        Add Employee
+      </button>
     <div className="employees">
       {
         employees.map(employee =>{
@@ -19,6 +26,7 @@ export const EmployeeList = () =>{
         })
       }
     </div>
+    </>
   )
   
 }
