@@ -1,12 +1,13 @@
 import React from 'react'
 import { Route } from "react-router-dom"
 import { Kennel } from "./Kennel"
-import { LocationCard } from "./Locations/LocationCard";
 import { EmployeeCard } from "./Employees/EmployeeCard";
 import { CustomerCard } from './Customers/CustomerCard';
 import { Home } from "./Home"
 import { AnimalProvider } from './animal/AnimalProvider';
 import { AnimalList } from "./animal/AnimalList";
+import { LocationProvider } from "./Locations/LocationProvider";
+import { LocationList } from "./Locations/LocationList";
 
 export const ApplicationViews = () => {
   return (
@@ -23,10 +24,12 @@ export const ApplicationViews = () => {
                 </Route>    
             </AnimalProvider>
             
-            <Route path="/locations">
-                <LocationCard />
-            </Route>
-            
+            <LocationProvider>
+                <Route exact path="/locations">
+                    <LocationList />
+                </Route>
+             </LocationProvider>
+             
             <Route path="/employees">
                 <EmployeeCard />
             </Route>
