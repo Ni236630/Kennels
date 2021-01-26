@@ -9,6 +9,16 @@ export const AnimalContext = createContext()
 export const AnimalProvider = (props) => {
   const [animals, setAnimals] = useState([])
   
+  const updateAnimal = animal => {
+    return fetch(`http://localhost:8088/animals/${animal.id}`,{
+      method:"PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(animal)
+    })
+      .then(getAnimals)
+  }
   
   const getAnimalById = (id) => {
     return fetch(`http://localhost:8088/animals/${id}?_expand=location&_expand=customer`)
@@ -47,7 +57,7 @@ export const AnimalProvider = (props) => {
      */
     return (
       <AnimalContext.Provider value={{
-        animals, getAnimals,addAnimal, getAnimalById, releaseAnimal
+        animals, getAnimals,addAnimal, getAnimalById, releaseAnimal,updateAnimal
       }}>
         {props.children}
       </AnimalContext.Provider>

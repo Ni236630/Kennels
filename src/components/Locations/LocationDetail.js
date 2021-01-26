@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { LocationContext } from './LocationProvider'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import './Locations.css'
 
 export const LocationDetail = () => {
@@ -16,7 +16,7 @@ export const LocationDetail = () => {
         setLocations(res)
       })
   },[])// eslint-disable-line react-hooks/exhaustive-deps
-  
+  const history = useHistory()
  
   return(
     
@@ -38,6 +38,9 @@ export const LocationDetail = () => {
     </h3>
     <div className="location__animals">
       { location.animals?.map(a => a.name ).join(", ")}
+    </div>
+    <div>
+     <button onClick={()=> history.push("/locations")}>Back</button>
     </div>
   
   </section>
