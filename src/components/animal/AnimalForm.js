@@ -13,7 +13,7 @@ export const AnimalForm = () => {
   /*
   In React return 'reacts' to the state and re-renders
   */
- const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const [animal, setAnimal] = useState({
     name: "",
     locationId: 0,
@@ -51,8 +51,6 @@ export const AnimalForm = () => {
   
   const handleSaveAnimal = () => {
   
-   
-    
     const locationId = parseInt(animal.locationId)
     const customerId = parseInt(animal.customerId)
     
@@ -66,6 +64,7 @@ export const AnimalForm = () => {
         updateAnimal({
           id: animal.id,
           name: animal.name, 
+          breed:animal.breed,
           locationId: locationId,
           customerId: customerId
         })
@@ -73,7 +72,12 @@ export const AnimalForm = () => {
       }else{
         
         //invoke addAnimal and pass animal as arguement
-        addAnimal(animal)
+        addAnimal({
+          name: animal.name,
+          breed:animal.breed,
+          locationId: locationId,
+          customerId: customerId
+        })
         .then(()=> history.push("/animal"))
       }
     }
@@ -97,7 +101,7 @@ export const AnimalForm = () => {
         <fieldset>
               <div className="form-group">
                   <label htmlFor="location">Assign to location: </label>
-                  <select defaultValue={animal.locationId} name="locationId" id="locationId" className="form-control"onChange={handleControlledInputChange} >
+                  <select value={animal.locationId} name="locationId" id="locationId" className="form-control"onChange={handleControlledInputChange} >
                       <option value="0">Select a location</option>
                       {locations.map(l => (
                           <option key={l.id} value={l.id}>
@@ -110,7 +114,7 @@ export const AnimalForm = () => {
           <fieldset>
               <div className="form-group">
                   <label htmlFor="customerId">Customer: </label>
-                  <select defaultValue={animal.customerId} name="customer" id="customerId" className="form-control" onChange={handleControlledInputChange}>
+                  <select value={animal.customerId} name="customer" id="customerId" className="form-control" onChange={handleControlledInputChange}>
                       <option value="0">Select a customer</option>
                       {customers.map(c => (
                           <option key={c.id} value={c.id}>
