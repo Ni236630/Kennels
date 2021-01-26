@@ -8,9 +8,14 @@ export const LocationProvider = (props) => {
   //declare state
   const [locations, setLocations] = useState([])
   
+  const getLocationById = (id) =>{
+    return fetch(`http://localhost:8088/locations/${id}?_embed=employees&_embed=animals`)
+      .then(res =>res.json())
+  }
+  
   //fetch call to 'get' data
   const getLocations = () => {
-    return fetch("http://localhost:8088/locations")
+    return fetch(`http://localhost:8088/locations?_embed=employees&_embed=animals`)
     .then(res => res.json())
     .then(setLocations)
   }
@@ -29,7 +34,7 @@ export const LocationProvider = (props) => {
   //return that dispatches usable data by children
   return(
     <LocationContext.Provider value={{
-      locations, getLocations, addLocations
+      locations, getLocations, addLocations,getLocationById
     }}>
       {props.children}
     </LocationContext.Provider>
