@@ -3,30 +3,41 @@ import { LocationContext } from "../Locations/LocationProvider"
 import { AnimalContext } from "./AnimalProvider"
 import { CustomerContext } from "../Customers/CustomerProvider"
 import "./Animal.css"
-import { useHistory } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 
 export const AnimalForm = () => {
-  const { addAnimal } = useContext(AnimalContext)
+  const { addAnimal, getAnimalById, updateAnimal } = useContext(AnimalContext)
   const { customers, getCustomers } = useContext(CustomerContext)
   const { locations, getLocations } = useContext(LocationContext)
   
   /*
   In React return 'reacts' to the state and re-renders
   */
- 
+ const [isLoading, setIsLoading] = useState(true)
   const [animal, setAnimal] = useState({
     name: "",
     locationId: 0,
     customerId: 0,
     breed:""
   })
+  
+  const {animalId} = useParams()
   const history = useHistory()
 
   //now we get state on initialization
   useEffect(() =>{
-    getLocations()
-    .then(getCustomers)
-  },[])// eslint-disable-line react-hooks/exhaustive-deps
+    getLocations().then(getCustomers).then(() => {
+      if (animalId){
+        getAnimalById(animalId)
+        .then(animal => {
+            setAnimal(animal)
+            setIsLoading(false)
+        })
+      } else {
+        setIsLoading(false)
+      }
+    })
+  }, [])// eslint-disable-line react-hooks/exhaustive-deps
   
   //on field change; update state... this will re-render display values in state
   
@@ -38,8 +49,9 @@ export const AnimalForm = () => {
     setAnimal(newAnimal)
   }
   
-  const handleClickSaveAnimal = (event) => {
-    event.preventDefault() //prevents button submission
+  const handleSaveAnimal = () => {
+  
+   
     
     const locationId = parseInt(animal.locationId)
     const customerId = parseInt(animal.customerId)
@@ -49,11 +61,23 @@ export const AnimalForm = () => {
     } else {
       animal.customerId = customerId
       animal.locationId = locationId
-      //invoke addAnimal and pass animal as arguement
-      addAnimal(animal)
-      .then(()=> history.push("/animal"))
+      setIsLoading(true)
+      if(animalId){
+        updateAnimal({
+          id: animal.id,
+          name: animal.name, 
+          locationId: locationId,
+          customerId: customerId
+        })
+          .then(() => history.push("/animal"))
+      }else{
+        
+        //invoke addAnimal and pass animal as arguement
+        addAnimal(animal)
+        .then(()=> history.push("/animal"))
+      }
     }
-    }
+ }
     
     return (
       <form className="animalForm">
@@ -97,9 +121,13 @@ export const AnimalForm = () => {
               </div>
           </fieldset>
           <button className="btn btn-primary"
-            onClick={handleClickSaveAnimal}>
-            Save Animal
-          </button>
+          disabled={isLoading}
+          onClick={event => {
+            event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+            handleSaveAnimal()
+          }}>
+        {animalId ? <>Save Animal</> : <>Add Animal</>}</button>
+         
       </form>
     )
 }
