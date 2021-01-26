@@ -6,6 +6,11 @@ export const EmployeeContext = createContext()
 export const EmployeeProvider = (props) => {
   const  [employees, setEmployees] = useState([])
   
+  const  getEmployeeById = (id) => {
+    return fetch(`http://localhost:8088/employees/${id}?_expand=location`)
+      .then(res => res.json())
+  }
+  
   const getEmployees = () => {
     fetch("http://localhost:8088/employees?_expand=location")
     .then(res => res.json())
@@ -27,7 +32,7 @@ export const EmployeeProvider = (props) => {
   
   return(
     <EmployeeContext.Provider value={{
-      getEmployees,employees,addEmployee
+      getEmployees,employees,addEmployee, getEmployeeById
     }}>
       {props.children}
     </EmployeeContext.Provider>

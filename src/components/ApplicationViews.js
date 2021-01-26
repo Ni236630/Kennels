@@ -4,15 +4,16 @@ import { Kennel } from "./Kennel"
 import { EmployeeProvider } from "./Employees/EmployeeProvider";
 import { EmployeeList } from "./Employees/EmployeeList";
 import { EmployeeForm } from "./Employees/EmployeeForm"
+import { EmployeeDetail } from './Employees/EmployeeDetail'
 import { Home } from "./Home"
 import { AnimalProvider } from './animal/AnimalProvider';
 import { AnimalList } from "./animal/AnimalList";
 import { AnimalForm  } from "./animal/AnimalForm";
+import { AnimalDetail } from "./animal/AnimalDetail";
 import { LocationProvider } from "./Locations/LocationProvider";
 import { LocationList } from "./Locations/LocationList";
 import { CustomerProvider } from "./Customers/CustomerProvider";
 import { CustomerList } from "./Customers/CustomerList"
-import { AnimalDetail } from "./animal/AnimalDetail";
 
 
 export const ApplicationViews = () => {
@@ -52,6 +53,9 @@ export const ApplicationViews = () => {
              </LocationProvider>
              
             <EmployeeProvider>
+                    <Route exact path="/employee/detail/:employeeId(\d+)">
+                            <EmployeeDetail />
+                    </Route>
                 <LocationProvider>
                     <Route exact path="/employees">
                         <EmployeeList />
