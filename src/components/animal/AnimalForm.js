@@ -98,7 +98,7 @@ export const AnimalForm = () => {
             <input type="text" id="breed" onChange={handleControlledInputChange}required className="from-control" placeholder="Animal breed" value={animal.breed}/>
           </div>
         </fieldset>
-        <fieldset>
+        <fieldset> 
               <div className="form-group">
                   <label htmlFor="location">Assign to location: </label>
                   <select value={animal.locationId} name="locationId" id="locationId" className="form-control"onChange={handleControlledInputChange} >
